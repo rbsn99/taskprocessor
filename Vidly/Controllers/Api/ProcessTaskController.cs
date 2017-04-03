@@ -9,5 +9,6 @@ namespace Vidly.Controllers.Api
 {
     public class ProcessTaskController : ApiController
     {
+        private int test;
     }
 }
