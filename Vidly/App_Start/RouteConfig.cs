@@ -13,6 +13,9 @@ namespace Vidly
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes(); //dzieki temu można korzystać z nadawania sciezek w kontrolerach
+
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
