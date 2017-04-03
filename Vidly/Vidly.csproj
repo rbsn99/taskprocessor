@@ -209,7 +209,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Api\ProcessController.cs" />
+    <Compile Include="Controllers\Api\ProcessesController.cs" />
     <Compile Include="Controllers\Api\ProcessTaskController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -237,6 +237,14 @@
     <Compile Include="Migrations\201704031653130_AddProcessTaskAndProcess.cs" />
     <Compile Include="Migrations\201704031653130_AddProcessTaskAndProcess.Designer.cs">
       <DependentUpon>201704031653130_AddProcessTaskAndProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031739582_AddedReferenceToIdentityModels.cs" />
+    <Compile Include="Migrations\201704031739582_AddedReferenceToIdentityModels.Designer.cs">
+      <DependentUpon>201704031739582_AddedReferenceToIdentityModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031746027_PopulateExampleProcessesAndTasks.cs" />
+    <Compile Include="Migrations\201704031746027_PopulateExampleProcessesAndTasks.Designer.cs">
+      <DependentUpon>201704031746027_PopulateExampleProcessesAndTasks.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -345,6 +353,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704031653130_AddProcessTaskAndProcess.resx">
       <DependentUpon>201704031653130_AddProcessTaskAndProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031739582_AddedReferenceToIdentityModels.resx">
+      <DependentUpon>201704031739582_AddedReferenceToIdentityModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031746027_PopulateExampleProcessesAndTasks.resx">
+      <DependentUpon>201704031746027_PopulateExampleProcessesAndTasks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
