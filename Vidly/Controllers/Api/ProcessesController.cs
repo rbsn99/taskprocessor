@@ -12,13 +12,15 @@ namespace Vidly.Controllers.Api
     {
         private ApplicationDbContext _context;
 
+ 
         public ProcessesController()
         {
             _context = new ApplicationDbContext();
         }
 
         // GET /api/processes
-
+        [Route("api/getprocesses")]
+        [HttpGet]
         public IEnumerable<Process> GetProcesses()
         {
 
@@ -36,7 +38,7 @@ namespace Vidly.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return process; 
+            return process;
         }
 
         // POST /api/processes
