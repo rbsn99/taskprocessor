@@ -23,8 +23,8 @@ namespace Vidly.Controllers.Api
         [HttpGet]
         public IEnumerable<Process> GetProcesses()
         {
-
-            return _context.Processes.ToList();
+            var Processes = _context.Processes;
+            return Processes;
         }
 
         // GET /api/processes/1

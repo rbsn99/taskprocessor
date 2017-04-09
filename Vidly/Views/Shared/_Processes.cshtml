@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewBag.Title = "Processes";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,16 +8,17 @@
 
 <table id="processes" class="table table-bordered table-hover">
     <thead>
-        <tr>
+        <tr> 
             <th>Process name</th>
-        </tr>
+        </tr> 
     </thead>
-    <tbody></tbody>
+    <tbody>
+    </tbody>
 </table>
 @section scripts
 {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var table = $("#processes").DataTable({
                 ajax: {
                     url: "/api/getprocesses",
@@ -26,13 +27,12 @@
                 columns: [
                     {
                         data: "ProcessName",
-                        render: function(data, type, process) {
-                            return "<a href='/processes/edit/" + process.Id + "'>" + process.ProcessName + "</a>";
+                        render: function(data) {
+                            return "<a href='/processes/getdetails/" + data.ProcessName + "'>" + data.ProcessName + "</a>";
                         }
-
                     }
                 ]
-            });
-        });
+            }); 
+     });
     </script>
 }
