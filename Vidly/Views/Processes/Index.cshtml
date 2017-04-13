@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <th>Process name</th>
+            <th>Details</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -20,14 +21,21 @@
         $(document).ready(function() {
             var table = $("#processes").DataTable({
                 ajax: {
-                    url: "/api/getprocesses",
+                    url: "/api/processes",
                     dataSrc: ""
                 },
                 columns: [
                     {
                         data: "ProcessName",
                         render: function(data, type, process) {
-                            return "<a href='/processes/edit/" + process.Id + "'>" + process.ProcessName + "</a>";
+                            return "<a href='/processes/details/" + process.Id + "'>" + process.ProcessName + "</a>";
+                        }
+
+                    },
+                    {
+                        data: "ProcessId",
+                        render: function(data, type, process) {
+                            return "<a href='/processes/settings/" + process.Id + "'> Settings </a>";
                         }
 
                     }

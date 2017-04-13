@@ -19,12 +19,12 @@ namespace Vidly.Controllers.Api
         }
 
         // GET /api/processes
-        [Route("api/getprocesses")]
+        [Route("api/processes")]
         [HttpGet]
         public IEnumerable<Process> GetProcesses()
         {
             var Processes = _context.Processes;
-            return Processes;
+            return Processes.ToList();
         }
 
         // GET /api/processes/1
