@@ -28,7 +28,8 @@ namespace Vidly.Controllers.Api
         }
 
         // GET /api/processes/1
-
+        [Route("api/processes/settings/{id}")]
+        [HttpGet]
         public Process GetProcess(int id)
         {
             var process = _context.Processes.SingleOrDefault(c => c.Id == id);
@@ -56,7 +57,9 @@ namespace Vidly.Controllers.Api
             return process;
         }
 
-        // PUT/api/processes/1
+ 
+
+        [Route("api/processes/settings/{id}")]
         [HttpPut]
         public void UpdateProcess(int id, Process process)
         {

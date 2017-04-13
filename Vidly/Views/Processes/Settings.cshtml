@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Settings</h2>
+ 
+
+<div id="process" class="container">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#details" data-toggle="tab">Details</a>
+        </li>
+        <li>
+            <a href="#flow" data-toggle="tab">Flow</a>
+        </li>
+ 
+    </ul>
+
+    <div class="tab-content ">
+        <div class="tab-pane active" id="details">
+ 
+            <form class="well form-horizontal" action=" " method="post" id="process_details_form">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <legend>Process details</legend>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Process ID</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="process_id" placeholder="Process ID" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Process GUID</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="process_guid" placeholder="Process GUID" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Process Name</label>
+                        <div class="col-md-4 inputGroupContainer">                            
+                             <input id="process_name" placeholder="Process Name" class="form-control" type="text">                      
+                        </div>
+                    </div>
+                    
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Created date</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="created_date" placeholder="Created date" class="form-control" type="text" readonly="">
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn" onclick="UpdateProcessDetails();">Save</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+
+        </div>
+        <div class="tab-pane" id="flow">
+            <h3>processflow goes here</h3>
+        </div>
+ 
+    </div>
+</div>
+ 
+ 
+ @section scripts
+ {
+     <script>
+         $(document).ready(function () {
+                 var url = window.location.pathname;
+                 var id = url.substring(url.lastIndexOf('/') + 1);
+                 $.getJSON('/api/processes/settings/' + id,
+                     function(data) {
+                         document.getElementById("process_id").value = data.Id;
+                         document.getElementById("process_name").value = data.ProcessName;
+                         document.getElementById("process_guid").value = data.ProcessGuid;
+                         document.getElementById("created_date").value = data.CreatedDate;
+                     });
+             }
+         );
+
+
+         function UpdateProcessDetails() {
+             $(function () {
+                 var id = document.getElementById("process_id").value;
+                 var process = { ProcessName: document.getElementById("process_name").value};
+                 $.ajax({
+                     type: "PUT",
+                     data: JSON.stringify(process),
+                     url: "/api/processes/settings/" + id,
+                     contentType: "application/json"
+                 });
+             });
+         }
+
+     </script>
+ }
