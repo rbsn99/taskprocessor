@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Go2Flow</RootNamespace>
-    <AssemblyName>Go2Flow</AssemblyName>
+    <RootNamespace>Vidly</RootNamespace>
+    <AssemblyName>Vidly</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -254,6 +254,46 @@
     <Compile Include="Migrations\201704110841433_added PT and PTA.Designer.cs">
       <DependentUpon>201704110841433_added PT and PTA.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704132307483_PopulateProcessTaskType.cs" />
+    <Compile Include="Migrations\201704132307483_PopulateProcessTaskType.Designer.cs">
+      <DependentUpon>201704132307483_PopulateProcessTaskType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704132310430_AddPTT.cs" />
+    <Compile Include="Migrations\201704132310430_AddPTT.Designer.cs">
+      <DependentUpon>201704132310430_AddPTT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704132311315_Populate PTT.cs" />
+    <Compile Include="Migrations\201704132311315_Populate PTT.Designer.cs">
+      <DependentUpon>201704132311315_Populate PTT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704132317451_Alter PTT - change datetime from float to datetime.cs" />
+    <Compile Include="Migrations\201704132317451_Alter PTT - change datetime from float to datetime.Designer.cs">
+      <DependentUpon>201704132317451_Alter PTT - change datetime from float to datetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704132322541_Populate PTT again.cs" />
+    <Compile Include="Migrations\201704132322541_Populate PTT again.Designer.cs">
+      <DependentUpon>201704132322541_Populate PTT again.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704191833387_Added Guid to PT.cs" />
+    <Compile Include="Migrations\201704191833387_Added Guid to PT.Designer.cs">
+      <DependentUpon>201704191833387_Added Guid to PT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704201744189_Add test attribute to Movie.cs" />
+    <Compile Include="Migrations\201704201744189_Add test attribute to Movie.Designer.cs">
+      <DependentUpon>201704201744189_Add test attribute to Movie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704201948057_Add more task types.cs" />
+    <Compile Include="Migrations\201704201948057_Add more task types.Designer.cs">
+      <DependentUpon>201704201948057_Add more task types.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704202037499_Updated Process tasks related classes, added PTTransition and PTRecipients.cs" />
+    <Compile Include="Migrations\201704202037499_Updated Process tasks related classes, added PTTransition and PTRecipients.Designer.cs">
+      <DependentUpon>201704202037499_Updated Process tasks related classes, added PTTransition and PTRecipients.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704202054306_Update process task related classes.cs" />
+    <Compile Include="Migrations\201704202054306_Update process task related classes.Designer.cs">
+      <DependentUpon>201704202054306_Update process task related classes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -264,6 +304,8 @@
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessTask.cs" />
     <Compile Include="Models\ProcessTaskAttribute.cs" />
+    <Compile Include="Models\ProcessTaskRecipient.cs" />
+    <Compile Include="Models\ProcessTaskTransition.cs" />
     <Compile Include="Models\ProcessTaskType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -514,6 +556,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ProcessTaskType\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -547,6 +590,36 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704110841433_added PT and PTA.resx">
       <DependentUpon>201704110841433_added PT and PTA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704132307483_PopulateProcessTaskType.resx">
+      <DependentUpon>201704132307483_PopulateProcessTaskType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704132310430_AddPTT.resx">
+      <DependentUpon>201704132310430_AddPTT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704132311315_Populate PTT.resx">
+      <DependentUpon>201704132311315_Populate PTT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704132317451_Alter PTT - change datetime from float to datetime.resx">
+      <DependentUpon>201704132317451_Alter PTT - change datetime from float to datetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704132322541_Populate PTT again.resx">
+      <DependentUpon>201704132322541_Populate PTT again.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704191833387_Added Guid to PT.resx">
+      <DependentUpon>201704191833387_Added Guid to PT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704201744189_Add test attribute to Movie.resx">
+      <DependentUpon>201704201744189_Add test attribute to Movie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704201948057_Add more task types.resx">
+      <DependentUpon>201704201948057_Add more task types.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704202037499_Updated Process tasks related classes, added PTTransition and PTRecipients.resx">
+      <DependentUpon>201704202037499_Updated Process tasks related classes, added PTTransition and PTRecipients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704202054306_Update process task related classes.resx">
+      <DependentUpon>201704202054306_Update process task related classes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

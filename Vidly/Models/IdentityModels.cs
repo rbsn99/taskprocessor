@@ -22,7 +22,12 @@ namespace Vidly.Models
     {
         public DbSet<Process> Processes { get; set; }
         public DbSet<ProcessTask> ProcessTasks { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        //public DbSet<Customer> Customers { get; set; }
+        public DbSet<ProcessTaskType> ProcessTaskTypes { get; set; }
+        public DbSet<ProcessTaskAttribute> ProcessTaskAttributes { get; set; }
+        public DbSet<ProcessTaskRecipient> ProcessTaskRecipients { get; set; }
+        public DbSet<ProcessTaskTransition> ProcessTaskTransition { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

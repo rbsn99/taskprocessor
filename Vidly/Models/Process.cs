@@ -11,5 +11,6 @@ namespace Vidly.Models
         public Guid ProcessGuid { get; set; }
         public string ProcessName { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime DeletedDate { get; set; }
     }
 }

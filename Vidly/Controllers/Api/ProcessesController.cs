@@ -91,5 +91,14 @@ namespace Vidly.Controllers.Api
             _context.SaveChanges();
 
         }
+
+        // GET /api/processes
+        [Route("api/processes/tasktypes")]
+        [HttpGet]
+        public IEnumerable<ProcessTaskType> GetProcessTaskTypes()
+        {
+            var ProcessesTaskTypes = _context.ProcessTaskTypes;
+            return ProcessesTaskTypes.ToList();
+        }
     }
 }
