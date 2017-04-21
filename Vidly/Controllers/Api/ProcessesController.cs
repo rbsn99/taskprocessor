@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Data.Entity;
 using System.Net.Http;
 using System.Web.Http;
 using Vidly.Models;
@@ -92,13 +93,48 @@ namespace Vidly.Controllers.Api
 
         }
 
-        // GET /api/processes
+ 
         [Route("api/processes/tasktypes")]
         [HttpGet]
         public IEnumerable<ProcessTaskType> GetProcessTaskTypes()
         {
             var ProcessesTaskTypes = _context.ProcessTaskTypes;
             return ProcessesTaskTypes.ToList();
+        }
+
+ 
+        [Route("processes/settings/processtasks/{id}")]
+        [HttpGet]
+        public IEnumerable<PTView>  GetProcessTasks(int id)
+        {
+            var process = _context.Processes.SingleOrDefault(c => c.Id == id);
+
+            List<ProcessTask> processTasks = _context.ProcessTasks.Where(c => c.ProcessGuid == process.ProcessGuid).ToList();
+
+            List<PTView> PTview = new List<PTView>();
+
+             foreach (ProcessTask pt in processTasks)
+            {
+                PTView ptv = new PTView();
+                ptv.Id = pt.Id;
+                ptv.ProcessTaskGuid = pt.ProcessTaskGuid;
+                ptv.ProcessGuid = pt.ProcessGuid;
+                ptv.Process = process;
+                ptv.TaskTypeId = pt.TaskTypeId;
+                ptv.ProcessTaskType = _context.ProcessTaskTypes.Where(c => c.Id == pt.TaskTypeId).SingleOrDefault();
+                ptv.TaskName = pt.TaskName;
+                ptv.CompletionTask = pt.CompletionTask;
+                ptv.ProcessTaskRecipient = _context.ProcessTaskRecipients.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).SingleOrDefault();
+                ptv.ProcessTaskAttribute = _context.ProcessTaskAttributes.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).SingleOrDefault();
+                ptv.CreatedDate = pt.CreatedDate;
+                ptv.DeletedDate = pt.DeletedDate;
+
+                PTview.Add(ptv);
+            }
+
+
+
+            return PTview;
         }
     }
 }

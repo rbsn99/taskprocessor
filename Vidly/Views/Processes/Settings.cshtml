@@ -21,7 +21,7 @@
     <div class="tab-content ">
         <div class="tab-pane active" id="details">
  
-            <form class="well form-horizontal" action=" " method="post" id="process_details_form">
+            <form class="well form-horizontal"   method="post" id="process_details_form">
                 <fieldset>
 
                     <!-- Form Name -->
@@ -88,9 +88,10 @@
                             <th>Recipients</th>
                             <th>Dependencies</th>                                                       
                         </tr>
+
                     </thead>
                     <tbody>
-
+ 
                     </tbody>
                 </table>
             </div> 
@@ -104,20 +105,69 @@
  {
      <script>
          $(document).ready(function () {
-                 var url = window.location.pathname;
-                 var id = url.substring(url.lastIndexOf('/') + 1);
-                 $.getJSON('/api/processes/settings/' + id,
-                     function(data) {
-                         document.getElementById("process_id").value = data.Id;
-                         document.getElementById("process_name").value = data.ProcessName;
-                         document.getElementById("process_guid").value = data.ProcessGuid;
-                         document.getElementById("created_date").value = data.CreatedDate;
-                     });
+             var currenturl = window.location.pathname;
+             var id = currenturl.substring(currenturl.lastIndexOf('/') + 1);
 
-                 LoadProcessTasksTypes();
+             LoadProcessDetails(id);
+             LoadProcessTasksTypes();
+             LoadProcessTasks(id);
              }
          );
 
+         function LoadProcessTasks(id) {
+             var table = $("#tasks").DataTable({
+                 ajax: {
+                     url: "processtasks/" + id,
+                     dataSrc: ""
+                 },
+                 columns: [
+                     {
+                         data: "ProcessTaskGuid" 
+                     },
+                     {
+                         data: "Id" 
+                     },
+                     {
+                         data: "TaskName",
+                     },
+                     {
+                         data: "ProcessTaskType.ProcessTaskTypeName"
+                     },
+                     {
+                         data: "attributes" 
+                     },
+                     {
+                         data: "recipients" 
+                     },
+                     {
+                         data: "dependencies" 
+                     }
+                 ]
+             });
+         }
+
+         function LoadProcessDetails(id)
+         {
+
+             $.getJSON('/api/processes/settings/' + id,
+                 function (data) {
+                     document.getElementById("process_id").value = data.Id;
+                     document.getElementById("process_name").value = data.ProcessName;
+                     document.getElementById("process_guid").value = data.ProcessGuid;
+                     document.getElementById("created_date").value = data.CreatedDate;
+                 });
+         }
+
+         function LoadProcessTasksTypes() {
+             //alert('test');
+             $.getJSON('/api/processes/tasktypes',
+                     function (data) {
+                         for (i = 0; i < data.length; i++) {
+                             // $('#taskTypes ul').append('<li><a href="#" data-id="' + data[i].Id + '">' + data[i].ProcessTaskTypeName + '</a></li>');
+                             $('#taskTypes select').append('<option>' + data[i].ProcessTaskTypeName + '</option>');
+                         }
+                     });
+         }
 
          function UpdateProcessDetails() {
              $(function () {
@@ -132,16 +182,7 @@
              });
          }
 
-         function LoadProcessTasksTypes() {
-             //alert('test');
-             $.getJSON('/api/processes/tasktypes',
-                     function (data) {
-                         for (i = 0; i < data.length; i++) {
-                            // $('#taskTypes ul').append('<li><a href="#" data-id="' + data[i].Id + '">' + data[i].ProcessTaskTypeName + '</a></li>');
-                             $('#taskTypes select').append('<option>' + data[i].ProcessTaskTypeName + '</option>');
-                         }
-                     });
-         }
+
 
 
      </script>
