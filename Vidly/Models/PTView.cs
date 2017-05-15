@@ -16,7 +16,7 @@ namespace Vidly.Models
         public string TaskName { get; set; }
         public byte CompletionTask { get; set; }
         public ProcessTaskRecipient ProcessTaskRecipient { get; set; }
-        public ProcessTaskAttribute ProcessTaskAttribute { get; set; }
+        public List<ProcessTaskAttribute> ProcessTaskAttributes { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime DeletedDate { get; set; }
     }

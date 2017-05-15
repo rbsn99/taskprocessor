@@ -94,6 +94,7 @@
  
                     </tbody>
                 </table>
+                <button class="btn" id="updateSettingsBtn" onclick="UpdateTaskSettings();">Update settings</button>
             </div> 
         </div>
  
@@ -115,32 +116,62 @@
          );
 
          function LoadProcessTasks(id) {
+             var num = 0;
              var table = $("#tasks").DataTable({
+                 destroy: true,
+
                  ajax: {
                      url: "processtasks/" + id,
                      dataSrc: ""
                  },
                  columns: [
                      {
-                         data: "ProcessTaskGuid" 
+                         data: "ProcessTaskGuid",
+                         render: function (data, type, processtask)
+                         { return "<input class=\"ProcessTaskGuid\" type=\"text\" value=\" " + processtask.ProcessTaskGuid + " \" readonly>" }
                      },
                      {
-                         data: "Id" 
+                         //data: "Id",
+                         //render: function (data, type, processtask)
+                         render: function()
+                         { return "<input class=\"Id\" type=\"text\" value=\" " + num++ + " \" readonly>" }
+
                      },
                      {
                          data: "TaskName",
+                         render: function (data, type, processtask)
+                         { return "<input class=\"TaskName\" type=\"text\" value=\" " + processtask.TaskName + " \" >" }
+
                      },
                      {
-                         data: "ProcessTaskType.ProcessTaskTypeName"
+                         data: "ProcessTaskType.ProcessTaskTypeName",
+                         render: function (data, type, processtask)
+                         { return "<input class=\"ProcessTaskTypeName\" type=\"text\" value=\" " + processtask.ProcessTaskType.ProcessTaskTypeName + " \" >" }
+
                      },
                      {
-                         data: "attributes" 
+                         data: "attributes",
+                         render: function (data, type, processtask) {
+                             var fullAttributeValuesList = "";
+                             for (i = 0 ; i < processtask.ProcessTaskAttributes.length ; i++)
+                             {
+                                 fullAttributeValuesList += processtask.ProcessTaskAttributes[i].AttributeKey;
+                                 fullAttributeValuesList += "=";
+                                 fullAttributeValuesList += processtask.ProcessTaskAttributes[i].AttributeValue;
+                                 fullAttributeValuesList += ";";
+
+                             }
+                             return "<textarea class =\"attributes\">" + fullAttributeValuesList + "</textarea>";
+                         }
+
                      },
                      {
-                         data: "recipients" 
+                         render: function (data, type, processtask)
+                         { return "<input class=\"recipHolder\" type=\"text\" value=\" " + "recipHolder" + " \" >" }
                      },
                      {
-                         data: "dependencies" 
+                         render: function (data, type, processtask)
+                         { return "<input class=\"depHolder\" type=\"text\" value=\" " + "depHolder" + " \" >" }
                      }
                  ]
              });
@@ -181,9 +212,49 @@
                  });
              });
          }
+ 
+         
+         function UpdateTaskSettings() {
+ 
+             var id;
+             
+             $("#tasks tr").each(function () {
+                    var _ProcessTaskGuid=  $(this).find("input.ProcessTaskGuid").val(),
+                    _Id =                  $(this).find("input.Id").val(),
+                    _TaskName =            $(this).find("input.TaskName").val(),
+                    _ProcessTaskTypeName = $(this).find("input.ProcessTaskTypeName").val(),
+                    _attributes =          $(this).find("textarea.attributes").val(),
+                    _recipHolder =         $(this).find("input.recipHolder").val(),
+                    _depHolder =           $(this).find("input.depHolder").val();
+                        
+                 
 
 
+                    var ptu = {
+                        Id : _Id,
+                        ProcessTaskGuid : _ProcessTaskGuid,
+                        TaskName: _TaskName,
+                        ProcessTaskAttributes: _attributes,
+                        ProcessTaskRecipient: _recipHolder 
+                    };
 
+                    //update call
+                    id = document.getElementById("process_id").value;
+  
+                    
+                    $.ajax({
+                        type: "PUT",
+                        data: JSON.stringify(ptu),
+                        url: "processtasks/" + id,
+                        contentType: "application/json"
+                    });
+
+                 });
+          
+             alert('All tasks updated!');
+ 
+              LoadProcessTasks(id);
+         }
 
      </script>
  }

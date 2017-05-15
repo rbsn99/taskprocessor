@@ -125,16 +125,48 @@ namespace Vidly.Controllers.Api
                 ptv.TaskName = pt.TaskName;
                 ptv.CompletionTask = pt.CompletionTask;
                 ptv.ProcessTaskRecipient = _context.ProcessTaskRecipients.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).SingleOrDefault();
-                ptv.ProcessTaskAttribute = _context.ProcessTaskAttributes.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).SingleOrDefault();
+                ptv.ProcessTaskAttributes = _context.ProcessTaskAttributes.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).ToList();
                 ptv.CreatedDate = pt.CreatedDate;
                 ptv.DeletedDate = pt.DeletedDate;
 
                 PTview.Add(ptv);
             }
-
-
-
             return PTview;
+        }
+
+
+        [Route("processes/settings/processtasks/{id}")]
+        [HttpPut]
+        public void UpdateProcessTasks(int id, PTUpdate ptu)
+        {
+            var tasksList = _context.ProcessTasks.
+                Where(c => c.ProcessGuid == 
+                    _context.Processes
+                    .FirstOrDefault(p => p.Id == id)
+                    .ProcessGuid
+                    ).ToList();
+
+
+
+            if (!ModelState.IsValid)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            List<ProcessTask> pts = new List<ProcessTask>();
+            pts = tasksList;
+
+            foreach (ProcessTask pt in pts)
+            {
+                if (ptu.ProcessTaskGuid == pt.ProcessTaskGuid)
+                {
+                    pt.TaskName = ptu.TaskName;
+                    //more                   
+                }
+            }
+            
+
+            _context.SaveChanges();
         }
     }
 }
