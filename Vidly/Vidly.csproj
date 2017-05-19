@@ -322,6 +322,10 @@
     <Compile Include="Migrations\201704221310171_Populate PTTransiion.Designer.cs">
       <DependentUpon>201704221310171_Populate PTTransiion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705162018081_change deleteddate to be nullable.cs" />
+    <Compile Include="Migrations\201705162018081_change deleteddate to be nullable.Designer.cs">
+      <DependentUpon>201705162018081_change deleteddate to be nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -671,6 +675,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704221310171_Populate PTTransiion.resx">
       <DependentUpon>201704221310171_Populate PTTransiion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705162018081_change deleteddate to be nullable.resx">
+      <DependentUpon>201705162018081_change deleteddate to be nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

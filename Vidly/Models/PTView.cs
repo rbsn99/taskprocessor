@@ -19,5 +19,6 @@ namespace Vidly.Models
         public List<ProcessTaskAttribute> ProcessTaskAttributes { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime DeletedDate { get; set; }
+        public string ProcessTaskDependencies { get; set; }
     }
 }

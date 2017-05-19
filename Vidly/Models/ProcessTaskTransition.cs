@@ -14,6 +14,6 @@ namespace Vidly.Models
         public string SourceTaskState { get; set; } //rule made on source task state, e.g. Failed, Completed, In progress
         public string TransitionType { get; set; } //initiating or cancellation
         public DateTime CreatedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }
