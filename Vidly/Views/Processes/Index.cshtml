@@ -6,6 +6,28 @@
 
 <h2>Processes</h2>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter process description</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter name of the process:</p>
+                <input type="text" class="form-control" id="processTitle">
+            </div>
+ 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="createProcess();" data-dismiss="modal">CREATE</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <table id="processes" class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -15,6 +37,9 @@
     </thead>
     <tbody></tbody>
 </table>
+ 
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create new process</button>
+
 @section scripts
 {
     <script>
@@ -42,5 +67,43 @@
                 ]
             });
         });
+
+ 
+
+        function createProcess()
+        {
+            var processTitle = document.getElementById("processTitle").value;
+
+            alert(processTitle);
+
+            $(function () {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/processes/" + processTitle,
+                     contentType: "application/json",
+                    success: function (data) {
+                        alert(data);
+                        initializeProcess(data);
+                    }
+                });
+            });
+
+
+        }
+
+        function initializeProcess(processID) {
+            $(function () {
+                $.ajax({
+                    type: "PUT",
+                    url: "api/processes/initialize/" + processID,
+                     contentType: "application/json",
+                    success: function (data) {
+                        window.location.replace("/processes/settings/"+processID);
+                    }
+                });
+            });
+        }
+ 
+
     </script>
 }

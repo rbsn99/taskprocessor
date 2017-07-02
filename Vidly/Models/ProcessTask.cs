@@ -14,6 +14,6 @@ namespace Vidly.Models
         public string TaskName { get; set; }
         public byte CompletionTask { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }

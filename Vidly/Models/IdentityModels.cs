@@ -28,6 +28,11 @@ namespace Vidly.Models
         public DbSet<ProcessTaskRecipient> ProcessTaskRecipients { get; set; }
         public DbSet<ProcessTaskTransition> ProcessTaskTransition { get; set; }
 
+        public DbSet<Instance> Instances { get; set; }
+        public DbSet<InstanceTask> InstanceTasks { get; set; }
+        public DbSet<InstanceData> InstanceData { get; set; }
+
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

@@ -28,6 +28,62 @@ namespace Vidly.Controllers.Api
             return Processes.ToList();
         }
 
+        [Route("api/processes/{processTitle}")]
+        [HttpPut]
+        public int CreateProcess(string processTitle)
+        {
+            Process process = new Process();
+            process.ProcessName = processTitle;
+            process.ProcessGuid = Guid.NewGuid();
+            process.CreatedDate = DateTime.Now;
+            process.DeletedDate = null;
+
+
+            if (!ModelState.IsValid)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            _context.Processes.Add(process);
+            _context.SaveChanges();
+
+            int processID = _context.Processes.Max(p => p.Id);
+
+            return processID;
+        }
+
+        [Route("api/processes/initialize/{id}")]
+        [HttpPut]
+        public int InitializeProcess(int id)
+        {
+            Guid processGuid = _context.Processes.Where(p => p.Id == id).FirstOrDefault().ProcessGuid;
+
+            ProcessTask ptStarter = new ProcessTask();
+            ptStarter.ProcessTaskGuid = Guid.NewGuid();
+            ptStarter.ProcessGuid = processGuid;
+            ptStarter.TaskName = "Process Start";
+            ptStarter.TaskTypeId = 5;
+            ptStarter.CreatedDate = DateTime.Now;
+            ptStarter.CompletionTask = 1;
+            ptStarter.DeletedDate = null;
+
+            ProcessTask ptEnder = new ProcessTask();
+            ptEnder.ProcessTaskGuid = Guid.NewGuid();
+            ptEnder.ProcessGuid = processGuid;
+            ptEnder.TaskName = "Process End";
+            ptEnder.TaskTypeId = 6;
+            ptEnder.CreatedDate = DateTime.Now;
+            ptEnder.CompletionTask = 1;
+            ptEnder.DeletedDate = null;
+
+            _context.ProcessTasks.Add(ptStarter);
+            _context.ProcessTasks.Add(ptEnder);
+
+            _context.SaveChanges();
+
+            return id;
+        }
+
         // GET /api/processes/1
         [Route("api/processes/settings/{id}")]
         [HttpGet]
@@ -43,22 +99,70 @@ namespace Vidly.Controllers.Api
             return process;
         }
 
-        // POST /api/processes
-        [HttpPost]
-        public Process CreateProcess(Process process)
+
+     
+        [Route("api/processes/tree/{id}")]
+        [HttpGet]
+        public List<ProcessTaskTree> GetProcessTree(int id)
         {
-            if (!ModelState.IsValid)
+            Guid processGuid = _context.Processes.SingleOrDefault(c => c.Id == id).ProcessGuid;
+
+            var processTasks = _context.ProcessTasks.Where(pt => pt.ProcessGuid == processGuid).ToList();
+
+            bool allNodesAdded = true;
+            List<ProcessTaskTree> ptree = new List<ProcessTaskTree>();
+            ProcessTaskTree root = new ProcessTaskTree();
+
+            foreach (var pt in processTasks)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                if (pt.TaskTypeId == 5)
+                {
+                    root.name = pt.TaskName;
+                    root = updateTree(root, pt.ProcessTaskGuid);
+                }
             }
 
-            _context.Processes.Add(process);
-            _context.SaveChanges();
-
-            return process;
+            ptree.Add(root);
+            return ptree;
         }
 
- 
+        ProcessTaskTree updateTree(ProcessTaskTree node, Guid nodeGuid)
+        {
+            var children = _context.ProcessTaskTransition.Where(ptt => ptt.SourceTaskGuid == nodeGuid).ToList();
+
+            if (children.Count == 0) return node;
+
+            else
+            {
+
+                node.children = new List<ProcessTaskTree>();
+
+                foreach (var child in children)
+                {
+                    ProcessTaskTree newNode = new ProcessTaskTree();
+
+                    var destinationTask = _context.ProcessTasks
+                        .Where(cd => cd.ProcessTaskGuid == child.DestinationTaskGuid)
+                        .FirstOrDefault();
+
+                    newNode.name = destinationTask.TaskName;
+
+                    node.children.Add(newNode);
+
+                    var destChildren = _context.ProcessTaskTransition.Where(ptt => ptt.SourceTaskGuid == destinationTask.ProcessTaskGuid)
+                        .ToList();
+                    if (destChildren.Count > 0)
+                    {
+                        newNode = updateTree(newNode, destinationTask.ProcessTaskGuid);
+                    }
+
+                }
+
+                return node; 
+            }
+        }
+
+
 
         [Route("api/processes/settings/{id}")]
         [HttpPut]
@@ -127,7 +231,7 @@ namespace Vidly.Controllers.Api
                 ptv.ProcessTaskRecipient = _context.ProcessTaskRecipients.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).SingleOrDefault();
                 ptv.ProcessTaskAttributes = _context.ProcessTaskAttributes.Where(c => c.ProcessTaskGuid == pt.ProcessTaskGuid).ToList();
                 ptv.CreatedDate = pt.CreatedDate;
-                ptv.DeletedDate = pt.DeletedDate;
+                 
 
                 var transitions = _context.ProcessTaskTransition
                     .Where(t => t.DestinationTaskGuid == pt.ProcessTaskGuid)
@@ -242,7 +346,54 @@ namespace Vidly.Controllers.Api
                 .FirstOrDefault();
 
             task.TaskName = ptu.TaskName;
+
+            /* ************************ UPDATE ProcessTaskAttributes DATA ************************ */
+ 
+            //split the attributes along with their values
+            List<string> attrGiven = ptu.ProcessTaskAttributes.Trim().Split(';').ToList();
+
             
+            foreach (var attr in attrGiven)
+            {
+                //split into key - value pair
+                List<string> attributesVSvalues = attr.Trim().Split('=').ToList();
+
+
+                //if there was one found
+                if (attributesVSvalues.Count > 0 && attr != "")
+                {
+                    //find a record with the specific key
+
+                    string keyToCompare = attributesVSvalues[0].ToString();
+
+                    var PTAttribute = _context.ProcessTaskAttributes
+                     .Where(pta => pta.ProcessTaskGuid == ptu.ProcessTaskGuid 
+                     && pta.AttributeKey == keyToCompare)
+                     .ToList();
+
+                    //if one found, let's check if need to update it's value
+                    if (PTAttribute.Count > 0)
+                    {
+                        PTAttribute[0].AttributeValue = attributesVSvalues[1];
+                        _context.SaveChanges();
+
+                    }
+                    //else let's create one
+                    else
+                    {
+                        ProcessTaskAttribute newPTA = new ProcessTaskAttribute();
+
+                        newPTA.AttributeKey = attributesVSvalues[0];
+                        newPTA.AttributeValue = attributesVSvalues[1];
+                        newPTA.ProcessTaskGuid = ptu.ProcessTaskGuid;
+                        newPTA.CreatedDate = DateTime.Now;
+                        newPTA.ProcessTaskAttributeGuid = Guid.NewGuid();
+
+                        _context.ProcessTaskAttributes.Add(newPTA);
+                        _context.SaveChanges();
+                    }
+                }
+            }
             _context.SaveChanges();
         }
 
@@ -266,7 +417,7 @@ namespace Vidly.Controllers.Api
             newPT.Id = max + 1;
             newPT.ProcessTaskGuid = Guid.NewGuid();
             newPT.ProcessGuid = processGuid;
-            newPT.TaskName = "new task";
+            newPT.TaskName = "(new task)";
             newPT.TaskTypeId = pt.TaskTypeId;
             newPT.CreatedDate = DateTime.Now;
             newPT.CompletionTask = 1;
@@ -289,5 +440,7 @@ namespace Vidly.Controllers.Api
 
             
         }
+
+        
     }
 }

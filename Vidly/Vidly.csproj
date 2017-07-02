@@ -213,8 +213,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\api\FormController.cs" />
+    <Compile Include="Controllers\api\InstanceController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstanceController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\api\ProcessesController.cs" />
@@ -326,10 +329,37 @@
     <Compile Include="Migrations\201705162018081_change deleteddate to be nullable.Designer.cs">
       <DependentUpon>201705162018081_change deleteddate to be nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705221734105_added instance,instancetask,instancedata.cs" />
+    <Compile Include="Migrations\201705221734105_added instance,instancetask,instancedata.Designer.cs">
+      <DependentUpon>201705221734105_added instance,instancetask,instancedata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706052024162_update instance class.cs" />
+    <Compile Include="Migrations\201706052024162_update instance class.Designer.cs">
+      <DependentUpon>201706052024162_update instance class.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706072043445_update instanceTask.cs" />
+    <Compile Include="Migrations\201706072043445_update instanceTask.Designer.cs">
+      <DependentUpon>201706072043445_update instanceTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706121800501_datetime nullable for processtask.cs" />
+    <Compile Include="Migrations\201706121800501_datetime nullable for processtask.Designer.cs">
+      <DependentUpon>201706121800501_datetime nullable for processtask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706121836255_deleteddate nullable for processes.cs" />
+    <Compile Include="Migrations\201706121836255_deleteddate nullable for processes.Designer.cs">
+      <DependentUpon>201706121836255_deleteddate nullable for processes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706151318596_deleteddate nullable for processtaskattributes.cs" />
+    <Compile Include="Migrations\201706151318596_deleteddate nullable for processtaskattributes.Designer.cs">
+      <DependentUpon>201706151318596_deleteddate nullable for processtaskattributes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Instance.cs" />
+    <Compile Include="Models\InstanceData.cs" />
+    <Compile Include="Models\InstanceTask.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Movie.cs" />
@@ -338,6 +368,7 @@
     <Compile Include="Models\ProcessTaskAttribute.cs" />
     <Compile Include="Models\ProcessTaskRecipient.cs" />
     <Compile Include="Models\ProcessTaskTransition.cs" />
+    <Compile Include="Models\ProcessTaskTree.cs" />
     <Compile Include="Models\ProcessTaskType.cs" />
     <Compile Include="Models\PTUpdate.cs" />
     <Compile Include="Models\PTView.cs" />
@@ -580,16 +611,18 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Movies\Random.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\Customers\Details.cshtml" />
-    <Content Include="Views\Customers\Index.cshtml" />
-    <Content Include="Views\Movies\Index.cshtml" />
+    <Content Include="Views\Instance\Index.cshtml" />
+    <Content Include="Views\Instance\NewRequest.cshtml" />
+    <Content Include="Views\Instance\OpenTasks.cshtml" />
+    <Content Include="Views\Instance\InstanceDetails.cshtml" />
+    <Content Include="Views\Instance\CreateRequest.cshtml" />
     <None Include="Views\Processes\Index.cshtml" />
     <Content Include="Views\Processes\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Form\" />
     <Folder Include="Views\ProcessTaskType\" />
   </ItemGroup>
   <ItemGroup>
@@ -678,6 +711,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705162018081_change deleteddate to be nullable.resx">
       <DependentUpon>201705162018081_change deleteddate to be nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705221734105_added instance,instancetask,instancedata.resx">
+      <DependentUpon>201705221734105_added instance,instancetask,instancedata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706052024162_update instance class.resx">
+      <DependentUpon>201706052024162_update instance class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706072043445_update instanceTask.resx">
+      <DependentUpon>201706072043445_update instanceTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706121800501_datetime nullable for processtask.resx">
+      <DependentUpon>201706121800501_datetime nullable for processtask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706121836255_deleteddate nullable for processes.resx">
+      <DependentUpon>201706121836255_deleteddate nullable for processes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706151318596_deleteddate nullable for processtaskattributes.resx">
+      <DependentUpon>201706151318596_deleteddate nullable for processtaskattributes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

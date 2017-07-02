@@ -12,10 +12,25 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 @*<li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-                <li>@Html.ActionLink("Movies", "Index", "Movies")</li>*@
-                <li>@Html.ActionLink("Processes", "Index", "Processes")</li>
-                <li>@Html.ActionLink("Forms", "Index", "Forms")</li>          
-                <li>@Html.ActionLink("Instances", "Index", "Instances")</li>                 
+            <li>@Html.ActionLink("Movies", "Index", "Movies")</li>*@
+
+
+                @*<li>@Html.ActionLink("Processes", "Index", "Processes")</li>
+                <li>@Html.ActionLink("Forms", "Index", "Forms")</li>
+                <li>@Html.ActionLink("Instances", "Index", "Instances")</li>*@
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/processes">Processes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/instance">Instances</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/forms">Forms</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/instance/NewRequest/">New request</a>
+                </li>
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "CreateRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CreateRequest</h2>
+
+<script>
+         $(document).ready(function () {
+             var currenturl = window.location.pathname;
+             var id = currenturl.substring(currenturl.lastIndexOf('/') + 1);
+
+             LoadProcessDetails(id);
+             LoadProcessTasksTypes();
+             LoadProcessTasks(id);
+             }
+         );
+
+</script>

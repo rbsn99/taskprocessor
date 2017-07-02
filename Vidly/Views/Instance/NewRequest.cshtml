@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "NewRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Start a new request</h2>
+
+<table id="processes" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Request type name</th>
+            <th>Start</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter request description</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter request's name:</p>
+                <input type="text" class="form-control" id="requestTitle">
+            </div>
+            <div class="modal-body">
+                <p>Start request on behalf of:</p>
+                <input type="text" class="form-control" id="usrBehalf">
+            </div>
+            <div style="display:none"> <input id="ProcessIDplaceholder" /> </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="createInstance();" data-dismiss="modal">START</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            var table = $("#processes").DataTable({
+                ajax: {
+                    url: "/api/processes",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "ProcessName"
+                        //render: function(data, type, process) {
+                        //    return "<a href='/processes/details/" + process.Id + "'>" + process.ProcessName + "</a>";
+                        //}
+
+                    },
+                    {
+                        data: "ProcessId",
+                        render: function(data, type, process) {
+                            //return "<button onclick=\"createInstance(" + process.Id + ")\">Start a request</button>";
+                            return "<button type=\"button\" onclick=\"setProcessIDPlaceholder("+ process.Id +")\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">Start a request</button>";
+                        }
+
+                    }
+                ]
+            });
+        });
+
+        function setProcessIDPlaceholder(processID)
+        {
+            document.getElementById("ProcessIDplaceholder").value = processID;
+
+            alert(document.getElementById("ProcessIDplaceholder").value);
+
+        }
+
+        function createInstance()
+        {
+
+            var processID = document.getElementById("ProcessIDplaceholder").value;
+
+            alert(processID);
+
+            $(function () {
+                 $.ajax({
+                    type: "PUT",
+                    url: "/api/instance/" + processID,
+                    contentType: "application/json",
+                    success: function (data) {
+                        alert('created instance id = '+ data +' from process id=' + processID);
+                        processRequest(data);
+                        window.location.replace("/instance/instancedetails/" + data);
+
+                    }
+                });
+            });
+        }
+
+
+        function processRequest(instanceID) {
+            $(function () {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/instance/processrequest/" + instanceID,
+                    contentType: "application/json",
+                    success: function (data) {
+                    }
+                });
+            });
+        }
+    </script>
+}

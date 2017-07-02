@@ -13,6 +13,6 @@ namespace Vidly.Models
         public string AttributeKey { get; set; }
         public string AttributeValue { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime DeletedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }

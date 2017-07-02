@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "InstanceDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Instance details</h2>
+
+<div id="instance" class="container">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#details" data-toggle="tab">Status</a>
+        </li>
+        <li>
+            <a href="#taskshistory" data-toggle="tab">Task history</a>
+        </li>
+    </ul>
+
+    <div class="tab-content ">
+        <div class="tab-pane active" id="details">
+
+            <form class="well form-horizontal" method="post" id="instance_details_form">
+                <fieldset>
+
+                    <!-- Form Name -->
+                    <legend>Instance details</legend>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Instance ID</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="instance_id" placeholder="Instance ID" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Last milestone</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="last_milestone" placeholder="Last milestone" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Last updated</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="last_updated" placeholder="Last updated" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Process ID</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="process_id" placeholder="Process ID" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Process Name</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="process_name" placeholder="Process Name" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Created date</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <input id="created_date" placeholder="Created date" class="form-control" type="text" readonly="">
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+
+        </div>
+        <!--Flow tab-->
+        <div class="tab-pane" id="taskshistory">
+            <h3>Task history</h3>
+            <div id="tasks">
+ 
+     
+                <table id="instanceTasks" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>GUID</th>
+                            <th>Task name</th>
+                            <th>Task type</th>
+                            <th>Task state</th>
+                            <th>Recipients</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+
+                    </thead>
+                    <tbody></tbody>
+                </table>
+             </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            var currenturl = window.location.pathname;
+            var id = currenturl.substring(currenturl.lastIndexOf('/') + 1);
+
+            var table = $("#instanceTasks").DataTable({
+                ajax: {
+                    url: "/api/instances/" + id + "/details",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "ItaskGuid"
+                    },
+                    {
+                        data: "TaskName"  
+                    },
+                    {
+                        render: function (data, type, instanceTask) {
+                            switch (instanceTask.TaskTypeId)
+                            {
+                                case 1:
+                                    return "Milestone";
+                                    break;
+                                case 2:
+                                    return "E-mail notification";
+                                    break;
+                                case 3:
+                                    return "Approval";
+                                    break;
+                                case 4:
+                                    return "Form";
+                                    break;
+                                case 5:
+                                    return "Process Start";
+                                    break;
+                                case 6:
+                                    return "Process End";
+                                    break;
+                                default:
+                                    return "unknown";
+                                    break;
+                            }
+                        }
+                    },
+
+                    {
+                        data: "ItaskState"
+                    },
+                    {
+                        render: function () { return "Placeholder"; }
+                    },
+                    {
+                        data: "StartDate"
+                    },
+                    {
+                        data: "EndDate"
+                    }
+
+                ]
+            });
+        });
+
+
+ 
+    </script>
+}
