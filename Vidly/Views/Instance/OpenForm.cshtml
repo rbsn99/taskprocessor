@@ -1,0 +1,99 @@
+﻿
+@model Vidly.Models.FormSourceData
+
+@{
+    ViewBag.Title = "OpenForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Open form</h2>
+<form id="components">
+ <div class="placeholder">
+
+     @Html.Raw(Model.FormSourceCode)
+
+ </div>
+</form>
+
+<input type="button" onclick="submitForm();" class="btn btn-danger" value="serializeObject"></p>
+
+<script>
+
+    $(document).ready(function () {
+        var currenturl = window.location.pathname;
+        var guid = currenturl.substring(currenturl.lastIndexOf('/') + 1);
+        console.log(guid);
+
+      //  LoadForm(guid);
+    });
+
+    function LoadForm(guid)
+    {
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/forms/" + guid,
+                contentType: "application/json",
+                success: function (data) {
+                   // console.log(data);
+                    $(".placeholder").append(data);
+                 }
+            });
+        });
+
+    }
+
+    function submitForm() {
+        var guid = getUrlParameter('guid');
+         
+        var formdata = $("#components").jsonify();
+
+        console.log(formdata);
+        console.log(guid);
+
+        var formdatalist = [];
+
+        var obj = formdata;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var val = obj[key];
+                var item = { label_name: key, value: val };
+                formdatalist.push(item);
+            }
+        }
+
+        bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Processing your request...</div>' })
+
+        $(function () {
+            $.ajax({
+                type: "PUT",
+                url: "formdata/" + guid,
+                contentType: "application/json",
+                data: JSON.stringify(formdatalist) ,
+                success: function (data) {
+                    window.location.replace("/instance/instanceDetails/" + data);
+                }
+            });
+        });
+       
+    }
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+</script>
+
+ 
+
+
+ 

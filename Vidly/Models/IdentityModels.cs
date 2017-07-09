@@ -31,7 +31,7 @@ namespace Vidly.Models
         public DbSet<Instance> Instances { get; set; }
         public DbSet<InstanceTask> InstanceTasks { get; set; }
         public DbSet<InstanceData> InstanceData { get; set; }
-
+        public DbSet<FormSourceData> FormSourceData { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

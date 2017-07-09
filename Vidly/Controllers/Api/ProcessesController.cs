@@ -209,17 +209,17 @@ namespace Vidly.Controllers.Api
  
         [Route("processes/settings/processtasks/{id}")]
         [HttpGet]
-        public IEnumerable<PTView>  GetProcessTasks(int id)
+        public IEnumerable<V_PT>  GetProcessTasks(int id)
         {
             var process = _context.Processes.SingleOrDefault(c => c.Id == id);
 
             List<ProcessTask> processTasks = _context.ProcessTasks.Where(c => c.ProcessGuid == process.ProcessGuid).ToList();
 
-            List<PTView> PTview = new List<PTView>();
+            List<V_PT> PTview = new List<V_PT>();
 
              foreach (ProcessTask pt in processTasks)
             {
-                PTView ptv = new PTView();
+                V_PT ptv = new V_PT();
                 ptv.Id = pt.Id;
                 ptv.ProcessTaskGuid = pt.ProcessTaskGuid;
                 ptv.ProcessGuid = pt.ProcessGuid;
@@ -273,40 +273,42 @@ namespace Vidly.Controllers.Api
             List<string> depsGiven = ptu.ProcessTaskDependencies.Trim().Split(',').ToList();
             List<string> desiredSourceTaskGuids = new List<string>();
 
+
             //check if given task IDs are already existing in transition table, or need to be added
             foreach (string dep in depsGiven) {
+                if (dep != string.Empty) {
+
+                    //guid of source task to be completed run the destination task
+                    var sourceTaskGuid = _context.ProcessTasks
+                        .Where(pt => pt.Id.ToString() == dep.ToString() && pt.ProcessGuid == processGuid)
+                        .SingleOrDefault()
+                        .ProcessTaskGuid;
+
+                    desiredSourceTaskGuids.Add(sourceTaskGuid.ToString());
+
+                    //check if this is an existing dependency
+                    var dependencyChcek = _context
+                        .ProcessTaskTransition
+                        .Where(ptt => ptt.SourceTaskGuid == sourceTaskGuid
+                                && ptt.DestinationTaskGuid == ptu.ProcessTaskGuid
+                                && ptt.DeletedDate == null)
+                        .ToList();
 
 
-                //guid of source task to be completed run the destination task
-                var sourceTaskGuid = _context.ProcessTasks
-                    .Where(pt => pt.Id.ToString() == dep.ToString() && pt.ProcessGuid == processGuid)
-                    .SingleOrDefault()
-                    .ProcessTaskGuid;
+                    //if none found, create new dependency
+                    if (dependencyChcek.Count == 0)
+                    {
+                        ProcessTaskTransition PTT = new ProcessTaskTransition();
+                        PTT.CreatedDate = DateTime.Now;
+                        PTT.DeletedDate = null;
+                        PTT.DestinationTaskGuid = ptu.ProcessTaskGuid;
+                        PTT.SourceTaskGuid = sourceTaskGuid;
+                        PTT.SourceTaskState = "Initiating";
+                        PTT.ProcessTaskTransitionId = 1;
+                        PTT.ProcessTaskTransitionGuid = Guid.NewGuid();
 
-                desiredSourceTaskGuids.Add(sourceTaskGuid.ToString());
-
-                //check if this is an existing dependency
-                var dependencyChcek = _context
-                    .ProcessTaskTransition
-                    .Where(ptt => ptt.SourceTaskGuid == sourceTaskGuid 
-                            && ptt.DestinationTaskGuid == ptu.ProcessTaskGuid
-                            && ptt.DeletedDate == null)
-                    .ToList();
-
-
-                //if none found, create new dependency
-                if (dependencyChcek.Count == 0)
-                {
-                    ProcessTaskTransition PTT = new ProcessTaskTransition();
-                    PTT.CreatedDate = DateTime.Now;
-                    PTT.DeletedDate = null;
-                    PTT.DestinationTaskGuid = ptu.ProcessTaskGuid;
-                    PTT.SourceTaskGuid = sourceTaskGuid;
-                    PTT.SourceTaskState = "Initiating";
-                    PTT.ProcessTaskTransitionId = 1;
-                    PTT.ProcessTaskTransitionGuid = Guid.NewGuid();
-
-                    _context.ProcessTaskTransition.Add(PTT);
+                        _context.ProcessTaskTransition.Add(PTT);
+                    }
                 }
             }
 
@@ -421,7 +423,6 @@ namespace Vidly.Controllers.Api
             newPT.TaskTypeId = pt.TaskTypeId;
             newPT.CreatedDate = DateTime.Now;
             newPT.CompletionTask = 1;
-            newPT.DeletedDate = DateTime.Now;
 
             _context.ProcessTasks.Add(newPT);
 

@@ -11,6 +11,7 @@ namespace Vidly.Models
         public Guid InstanceDataGuid { get; set; }
         public Guid ItaskGuid { get; set; }
         public Guid TaskGuid { get; set; }
+        public int TaskTypeId { get; set; }
         public string DataLabel { get; set; }
         public string DataValue { get; set; }
     }

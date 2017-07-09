@@ -13,7 +13,8 @@ namespace Vidly
                         "~/Scripts/bootstrap.js",
                        "~/Scripts/respond.js",
                        "~/scripts/datatables/jquery.datatables.js",
-                       "~/scripts/datatables/datatables.bootstrap.js"
+                       "~/scripts/datatables/datatables.bootstrap.js",
+                       "~/scripts/bootbox.min.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -24,12 +25,29 @@ namespace Vidly
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/serializer").Include(
+                        "~/Scripts/jquery.serializeObject.min.js"));
 
-
+            bundles.Add(new ScriptBundle("~/bundles/jsonify").Include(
+                        "~/Scripts/jsonify/jsonify.js"));
+         //   bundles.Add(new ScriptBundle("~/bundles/formbuilder")
+            //    .Include("~/Scripts/formbuilder/assets/js/lib/require.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
                       "~/content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
+
+
+
+
+            bundles.Add(new ScriptBundle("~/bundles/formbuilderstyle").Include(
+            "~/Scripts/formbuilder/assets/css/custom.css"
+
+           ));
         }
+
+
+
+
     }
 }

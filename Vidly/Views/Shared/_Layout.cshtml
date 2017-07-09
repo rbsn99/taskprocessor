@@ -26,6 +26,11 @@
     </style>
 </head>
 <body>
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/jsonify")
+    @Scripts.Render("~/bundles/serializer")
+
+
     @Html.Partial("_NavBar")
     <div class="wrapper container">
         @RenderBody()
@@ -35,9 +40,9 @@
         </footer>
     </div>
 
- 
-    @Scripts.Render("~/bundles/lib")
+
     @RenderSection("scripts", required: false)
     @RenderSection("flowdiagram", required: false)
+
 </body>
 </html>

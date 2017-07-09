@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Settings</h2>
+<div id="formdetails"  >
+
+    <div>
+        <div class="row clearfix">
+            <!-- Building Form. -->
+            <div class="col-sm-6">
+                <div class="clearfix">
+                    <h2>New form</h2>
+                    <hr>
+                    <div id="build">
+                        <form id="target" class="form-horizontal"></form>
+                    </div>
+                </div>
+            </div>
+            <!-- / Building Form. -->
+            <!-- Components -->
+            <div class="col-sm-6">
+                <h2>Drag & Drop components</h2>
+                <hr>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="formtabs">
+                        <!-- Tab nav -->
+                    </ul>
+                    <form class="form-horizontal" id="components">
+                        <fieldset>
+                            <div class="tab-content">
+                                <!-- Tabs of snippets go here -->
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <!-- / Components -->
+
+        </div>
+
+
+
+    </div> <!-- /container -->
+</div>
+<button onclick="testfunction();" class="btn btn-primary" id="jsonifytest">TEST</button>
+
+@section scripts
+ {
+ <script type="text/javascript"
+        src="@Url.Content("/Scripts/jquery-1.10.2.min.js")"></script>
+ 
+      @Styles.Render("~/bundles/formbuilderstyle");
+
+
+<script type="text/javascript" 
+        data-main="@Url.Content("/Scripts/formbuilder/assets/js/main-built.js")" 
+        src="@Url.Content("/Scripts/formbuilder/assets/js/lib/require.js")"></script>
+
+ 
+    <script>
+
+
+        function testfunction() {
+ 
+
+            var htmlcode = document.getElementById("render").value;
+            console.log(htmlcode);
+            SaveFormCode(htmlcode);
+            
+
+        }
+
+        function SaveFormCode(code) {
+            var currenturl = window.location.pathname;
+
+            var id = currenturl.substring(currenturl.lastIndexOf('/') + 1);
+            var form = { FormSourceCode : code};
+            $(function () {
+                $.ajax({
+                    type: "PUT",
+                    data: JSON.stringify(form),
+                    url: "/api/forms/settings/" + id,
+                    contentType: "application/json"
+                });
+            });
+        }
+
+    </script>
+    }

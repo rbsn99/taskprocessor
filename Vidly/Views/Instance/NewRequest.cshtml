@@ -43,7 +43,9 @@
 @section scripts
 {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+
+
             var table = $("#processes").DataTable({
                 ajax: {
                     url: "/api/processes",
@@ -73,7 +75,7 @@
         {
             document.getElementById("ProcessIDplaceholder").value = processID;
 
-            alert(document.getElementById("ProcessIDplaceholder").value);
+            //alert(document.getElementById("ProcessIDplaceholder").value);
 
         }
 
@@ -82,7 +84,7 @@
 
             var processID = document.getElementById("ProcessIDplaceholder").value;
 
-            alert(processID);
+           // alert(processID);
 
             $(function () {
                  $.ajax({
@@ -90,10 +92,9 @@
                     url: "/api/instance/" + processID,
                     contentType: "application/json",
                     success: function (data) {
-                        alert('created instance id = '+ data +' from process id=' + processID);
+                        //alert('created instance id = '+ data +' from process id=' + processID);
                         processRequest(data);
-                        window.location.replace("/instance/instancedetails/" + data);
-
+ 
                     }
                 });
             });
@@ -107,9 +108,29 @@
                     url: "/api/instance/processrequest/" + instanceID,
                     contentType: "application/json",
                     success: function (data) {
+                        checkForOpenTasks(data);
                     }
                 });
             });
         }
+
+        function checkForOpenTasks(instanceID) {
+            bootbox.dialog({ message: '<p><i class="fa fa-spin fa-spinner"></i> Starting request...</p>' })
+
+            $(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/instance/opentasks/" + instanceID,
+                    contentType: "application/json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data != "no pending tasks") {
+                            window.location.replace("/instance/openForm?guid=" + data);
+                        }
+                    }
+                });
+            });
+        }
+
     </script>
 }

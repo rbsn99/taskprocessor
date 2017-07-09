@@ -110,8 +110,11 @@
     <script>
         $(document).ready(function () {
 
+
             var currenturl = window.location.pathname;
             var id = currenturl.substring(currenturl.lastIndexOf('/') + 1);
+
+            LoadInstanceDetails(id);
 
             var table = $("#instanceTasks").DataTable({
                 ajax: {
@@ -172,6 +175,18 @@
         });
 
 
+        function LoadInstanceDetails()
+        {
  
+
+            $.getJSON('/api/instance/details/' + id,
+                function (data) {
+                    document.getElementById("process_id").value = data.Id;
+                    document.getElementById("process_name").value = data.ProcessName;
+                    document.getElementById("process_guid").value = data.ProcessGuid;
+                    document.getElementById("created_date").value = data.CreatedDate;
+                });
+           
+        }
     </script>
 }

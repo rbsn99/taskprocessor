@@ -81,6 +81,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -156,9 +160,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -215,11 +216,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\FormController.cs" />
     <Compile Include="Controllers\api\InstanceController.cs" />
-    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstanceController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\api\ProcessesController.cs" />
     <Compile Include="Controllers\ProcessesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -353,16 +353,28 @@
     <Compile Include="Migrations\201706151318596_deleteddate nullable for processtaskattributes.Designer.cs">
       <DependentUpon>201706151318596_deleteddate nullable for processtaskattributes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707020149356_added FormSourceData.cs" />
+    <Compile Include="Migrations\201707020149356_added FormSourceData.Designer.cs">
+      <DependentUpon>201707020149356_added FormSourceData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707021703130_add tasktypeid to instancedata.cs" />
+    <Compile Include="Migrations\201707021703130_add tasktypeid to instancedata.Designer.cs">
+      <DependentUpon>201707021703130_add tasktypeid to instancedata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707042016002_Some-test-migration.cs" />
+    <Compile Include="Migrations\201707042016002_Some-test-migration.Designer.cs">
+      <DependentUpon>201707042016002_Some-test-migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\V_FormData.cs" />
+    <Compile Include="Models\V_FormDetails.cs" />
+    <Compile Include="Models\FormSourceData.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instance.cs" />
     <Compile Include="Models\InstanceData.cs" />
     <Compile Include="Models\InstanceTask.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MembershipType.cs" />
-    <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\ProcessTask.cs" />
     <Compile Include="Models\ProcessTaskAttribute.cs" />
@@ -371,11 +383,9 @@
     <Compile Include="Models\ProcessTaskTree.cs" />
     <Compile Include="Models\ProcessTaskType.cs" />
     <Compile Include="Models\PTUpdate.cs" />
-    <Compile Include="Models\PTView.cs" />
+    <Compile Include="Models\V_PT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CustomersViewModel.cs" />
-    <Compile Include="ViewModels\RandomMovieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
@@ -494,6 +504,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -569,6 +580,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.serializeObject.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -577,6 +589,64 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\formbuilder\assets\css\custom.css" />
+    <Content Include="Scripts\formbuilder\assets\css\lib\bootstrap-responsive.min.css" />
+    <Content Include="Scripts\formbuilder\assets\css\lib\bootstrap.min.css" />
+    <Content Include="Scripts\formbuilder\assets\img\glyphicons-halflings-white.png" />
+    <Content Include="Scripts\formbuilder\assets\img\glyphicons-halflings.png" />
+    <Content Include="Scripts\formbuilder\assets\js\app.js" />
+    <Content Include="Scripts\formbuilder\assets\js\collections\my-form-snippets.js" />
+    <Content Include="Scripts\formbuilder\assets\js\collections\snippets.js" />
+    <Content Include="Scripts\formbuilder\assets\js\helper\pubsub.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\backbone.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\bootstrap.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\build.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\jquery.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\require.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\text.js" />
+    <Content Include="Scripts\formbuilder\assets\js\lib\underscore.js" />
+    <Content Include="Scripts\formbuilder\assets\js\main-built.js" />
+    <Content Include="Scripts\formbuilder\assets\js\main.js" />
+    <Content Include="Scripts\formbuilder\assets\js\models\snippet.js" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\app\about.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\app\render.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\app\renderform.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\app\tab-nav.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\app\temp.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-checkbox.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-input.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-main.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-select.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-textarea-split.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\popover\popover-textarea.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\appendedcheckbox.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\appendedtext.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\button.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\buttondouble.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\buttondropdown.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\filebutton.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\formname.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\multiplecheckboxes.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\multiplecheckboxesinline.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\multipleradios.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\multipleradiosinline.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\passwordinput.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\prependedcheckbox.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\prependedtext.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\searchinput.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\selectbasic.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\selectmultiple.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\snippet-templates.js" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\textarea.html" />
+    <Content Include="Scripts\formbuilder\assets\js\templates\snippet\textinput.html" />
+    <Content Include="Scripts\formbuilder\assets\js\views\my-form-snippet.js" />
+    <Content Include="Scripts\formbuilder\assets\js\views\my-form.js" />
+    <Content Include="Scripts\formbuilder\assets\js\views\snippet.js" />
+    <Content Include="Scripts\formbuilder\assets\js\views\tab-snippet.js" />
+    <Content Include="Scripts\formbuilder\assets\js\views\tab.js" />
+    <Content Include="Scripts\formbuilder\assets\js\views\temp-snippet.js" />
+    <Content Include="Scripts\formbuilder\dist\jquery.jsonify-0.3.1.min.js" />
+    <Content Include="Scripts\jsonify\jsonify.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -614,15 +684,26 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Instance\Index.cshtml" />
     <Content Include="Views\Instance\NewRequest.cshtml" />
-    <Content Include="Views\Instance\OpenTasks.cshtml" />
+    <Content Include="Views\Instance\OpenForm.cshtml" />
     <Content Include="Views\Instance\InstanceDetails.cshtml" />
     <Content Include="Views\Instance\CreateRequest.cshtml" />
+    <Content Include="Views\Form\Index.cshtml" />
+    <Content Include="Views\Form\Settings.cshtml" />
+    <Content Include="Scripts\formbuilder\assets\js\data\buttons.json" />
+    <Content Include="Scripts\formbuilder\assets\js\data\buttons.yaml" />
+    <Content Include="Scripts\formbuilder\assets\js\data\input.json" />
+    <Content Include="Scripts\formbuilder\assets\js\data\input.yaml" />
+    <Content Include="Scripts\formbuilder\assets\js\data\parse.rb" />
+    <Content Include="Scripts\formbuilder\assets\js\data\radio.json" />
+    <Content Include="Scripts\formbuilder\assets\js\data\radio.yaml" />
+    <Content Include="Scripts\formbuilder\assets\js\data\select.json" />
+    <Content Include="Scripts\formbuilder\assets\js\data\select.yaml" />
     <None Include="Views\Processes\Index.cshtml" />
     <Content Include="Views\Processes\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Form\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="Views\ProcessTaskType\" />
   </ItemGroup>
   <ItemGroup>
@@ -729,6 +810,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706151318596_deleteddate nullable for processtaskattributes.resx">
       <DependentUpon>201706151318596_deleteddate nullable for processtaskattributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707020149356_added FormSourceData.resx">
+      <DependentUpon>201707020149356_added FormSourceData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707021703130_add tasktypeid to instancedata.resx">
+      <DependentUpon>201707021703130_add tasktypeid to instancedata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707042016002_Some-test-migration.resx">
+      <DependentUpon>201707042016002_Some-test-migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

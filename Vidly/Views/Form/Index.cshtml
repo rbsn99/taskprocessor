@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Forms</h2>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter form description</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter name of the form:</p>
+                <input type="text" class="form-control" id="formTitle">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="createForm();" data-dismiss="modal">CREATE</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table id="forms" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>GUID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create new form</button>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            var table = $("#forms").DataTable({
+                ajax: {
+                    url: "/api/forms",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Id",
+                        render: function(data, type, form) {
+                            return form.Id;
+                        }
+
+
+                    },
+                    {
+                        data: "FormSourceDataGuid",
+                        render: function(data, type, form) {
+                            return form.FormSourceDataGuid;
+                        }
+                    },
+                    {
+                        data: "FormName",
+                        render: function (data, type, form) {
+                            return form.FormName;
+                        }
+                    },
+                    {
+                        data: "FormDescription",
+                        render: function (data, type, form) {
+                            return form.FormDescription;
+                        }
+                    }
+                ]
+            });
+        });
+
+
+
+        function createForm()
+        {
+            var formTitle = document.getElementById("formTitle").value;
+
+            alert(formTitle);
+
+            $(function () {
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/forms/" + formTitle,
+                     contentType: "application/json",
+                    success: function (data) {
+                        alert(data);
+                        window.location.replace("/form/settings/" + data);
+                    }
+                });
+            });
+        }
+
+    </script>
+}
